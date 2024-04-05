@@ -11,7 +11,7 @@ async function extractLinks(url) {
         return links; // Return the array of links
     } catch (error) {
         console.error(`Error fetching links from ${url}:`, error); // Log any errors that occur during fetching
-        return []; // Return an empty array in case of an error
+        throw new Error('Failed to fetch links.'); // Throw an error if fetching links fails
     }
 }
 
@@ -41,12 +41,4 @@ module.exports = async (req, res) => {
         const vulnerabilities = analyzeLinks(allLinks); // Analyze the links for potential vulnerabilities
         if (vulnerabilities.length > 0) {
             const message = 'Potential vulnerabilities found:\n' + vulnerabilities.join('\n'); // Create a message with the list of vulnerable links
-            return res.status(200).json({ message }); // Return a 200 status with the message if vulnerabilities are found
-        } else {
-            return res.status(200).json({ message: 'No vulnerabilities detected.' }); // Return a 200 status if no vulnerabilities are found
-        }
-    } catch (error) {
-        console.error('Error scanning website:', error); // Log any errors that occur during scanning
-        return res.status(500).json({ message: 'Internal server error.' }); // Return a 500 error in case of an internal server error
-    }
-};
+            return res.st
